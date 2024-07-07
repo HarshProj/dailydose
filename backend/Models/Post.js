@@ -1,18 +1,21 @@
-const mongoose=require("mongoose")
+const mongoose=require("mongoose");
+const User = require("./User");
 const {Schema}=mongoose;
+const {ObjectId}=Schema.Types;
 const PostSchema=new Schema({
     description:{
         type:String,
         require:true
     },
     userid:{
-        type:String,
-        require:true,
+        type:ObjectId,
+        ref:'User',
+        require:true
     },
-    likes:{
-        type:Number,
-        
-    },
+    likes:[{
+        type:ObjectId,
+        ref:User,
+    }],
     date:{
         type:Date,
         require:Date.now

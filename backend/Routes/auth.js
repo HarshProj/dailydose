@@ -4,6 +4,7 @@ const JWT_SECRET="HELLODEAR"
 const jwt=require('jsonwebtoken');
 const bcrypt=require('bcryptjs');
 const {body,validationResult}=require('express-validator');
+const User = require('../Models/User');
 router.post('/createuser',[
     body('name',"Enter a valid name").isLength({min:3}),
     body('email',"Enter a valid email").isEmail(),
@@ -11,6 +12,11 @@ router.post('/createuser',[
 
 ],async(req,res)=>{
     // const user=await new User(req.body);
+    const ip = req.headers['cf-connecting-ip'] ||
+                req.headers['x-real-ip'] ||
+                req.headers['x-forwarded-for'] ||
+                req.socket.remoteAddress || '' ;
+    console.log(ip);
     const valid=validationResult(req);
     if(!valid.isEmpty()){
        return  res.status(400).send({"error":"enter valid Credentials"})

@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
 const Post = require("./Post");
 const {Schema}=mongoose;
+const {ObjectId}=Schema.Types
 const UserSchema=new Schema({
     name:{
         type:String,
@@ -15,10 +16,6 @@ const UserSchema=new Schema({
         type:String,
         require:true,
     },
-    likes:[{
-        type:ObjectId,
-        ref:Post
-    }],
     post:[{
         type:ObjectId,
         ref:Post
