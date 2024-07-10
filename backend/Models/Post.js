@@ -7,6 +7,10 @@ const PostSchema=new Schema({
         type:String,
         require:true
     },
+    username:{
+        type:String,
+        require:true
+    },
     userid:{
         type:ObjectId,
         ref:'User',

@@ -6,18 +6,21 @@ const router=express.Router();
 router.post('/createpost',fetchuser,async(req,res)=>{
     const {id}=req.user;
     const {description}=req.body;
- 
     if(!description){ 
         res.send("Enter description");
     }
+    const us=await User.findById(id);
+    const {name}=us;
     const post=await Post.create({
         description,
         userid:id,
-        likes:[]
+        likes:[],
+        username:name
     })
     post.save()
-    .then(async()=>{
-        console.log("Post saved",post);
+    .then(async()=>{ 
+        console.log("Post saved",post,name);
+        // const us=await 
         const user=await User.updateOne({_id:id},{$push:{post:post._id}})
         res.status(200).send("Post saved successfully")
 
@@ -66,7 +69,7 @@ router.post('/like/:id',fetchuser,async(req,res)=>{
 router.get('/getposts',async(req,res)=>{
     try {
         const data = await Post.find();
-        res.send(data);
+        res.json(data);
     } catch (error) {
         res.status(500).send(error);
     }
