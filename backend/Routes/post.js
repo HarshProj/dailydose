@@ -19,7 +19,6 @@ router.post('/createpost',fetchuser,async(req,res)=>{
     })
     post.save()
     .then(async()=>{ 
-        console.log("Post saved",post,name);
         // const us=await 
         const user=await User.updateOne({_id:id},{$push:{post:post._id}})
         res.status(200).send("Post saved successfully")

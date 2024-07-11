@@ -27,7 +27,7 @@ export const Main = () => {
       {posts.map((e:any)=>(
     <div className="ml-3 w-full h-full mt-5">
       <div className="w-full h-10">{e.username}</div>
-      <div className="w-full h-28">{e.description}</div>
+      <div className="w-full h-20 ">{e.description}</div>
       <div className="h-12">
         {e.likes.length}
       </div>

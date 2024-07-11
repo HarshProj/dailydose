@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const Signup = () => {
   return (
@@ -31,7 +32,7 @@ export const Signup = () => {
                 <button type="submit" className='border border-gray-500 p-3 rounded hover:bg-sky-200 ease-in duration-300'>Submit</button>
             </div>
                 <div className="">
-                    <span >Already have one?</span><a href=""className='text-red-500 ml-2 hover:underline  '>Login</a>
+                    <span >Already have one?</span><Link to="/Login" className='text-red-500 ml-2 hover:underline  '>Login</Link>
                 </div>
         </form>
         </div>
