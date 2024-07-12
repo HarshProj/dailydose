@@ -16,7 +16,7 @@ router.post('/createuser',[
                 req.headers['x-real-ip'] ||
                 req.headers['x-forwarded-for'] ||
                 req.socket.remoteAddress || '' ;
-    console.log(ip);
+    // console.log(req,body);
     const valid=validationResult(req);
     if(!valid.isEmpty()){
        return  res.status(400).send({"error":"enter valid Credentials"})
@@ -49,7 +49,7 @@ router.post('/createuser',[
     }
 })
 
-router.get('/login',[
+router.post('/login',[
     body('email',"Enter a valid email").isEmail(),
     body('password',"Enter a valid password").isLength({min:3}),
 

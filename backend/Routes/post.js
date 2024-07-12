@@ -4,13 +4,18 @@ const fetchuser = require('../middleware/fetchuser');
 const User = require('../Models/User');
 const router=express.Router();
 router.post('/createpost',fetchuser,async(req,res)=>{
-    const {id}=req.user;
+    const id=req.user;
     const {description}=req.body;
     if(!description){ 
-        res.send("Enter description");
+       return  res.send({msg:"Enter description",success:false});
     }
     const us=await User.findById(id);
+    if(!us){
+        return res.send({msg:"User Not found",success:false});
+        
+    }
     const {name}=us;
+    console.log(name);
     const post=await Post.create({
         description,
         userid:id,
@@ -21,11 +26,11 @@ router.post('/createpost',fetchuser,async(req,res)=>{
     .then(async()=>{ 
         // const us=await 
         const user=await User.updateOne({_id:id},{$push:{post:post._id}})
-        res.status(200).send("Post saved successfully")
+        res.status(200).send({msg:"Post saved successfully",success:true})
 
     })
     .catch((err)=>{
-        res.send("Internal server conflict",err)
+        res.send({msg:err,success:false})
     })
 })
 router.delete("/deletepost/:id",fetchuser,async(req,res)=>{

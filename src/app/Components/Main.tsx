@@ -23,12 +23,12 @@ export const Main = () => {
   return (
     <div className='flex w-full h-full flex-col items-center '>
     <Navbar/>
-    <div className="w-[60%] h-full flex-col flex ">
+    <div className="w-[60%] h-screen flex-col flex shadow-lg">
       {posts.map((e:any)=>(
     <div className="ml-3 w-full h-full mt-5">
       <div className="w-full h-10">{e.username}</div>
       <div className="w-full h-20 ">{e.description}</div>
-      <div className="h-12">
+      <div className="h-10">
         {e.likes.length}
       </div>
     </div>

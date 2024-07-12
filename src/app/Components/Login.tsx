@@ -1,17 +1,31 @@
+"use client"
 import { headers } from 'next/headers';
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const Login = () => {
   const [user,setuser]=useState({email:"",password:""});
-  const handlelogin=async()=>{
+  const navigate=useNavigate();
+  const handlelogin=async (e: React.FormEvent) => {
+    e.preventDefault(); 
     console.log(user)
-    const data=await fetch('http://localhost:5000/api/post/getposts',
-      {headers:{
+    const data=await fetch('http://localhost:5000/api/auth/login',
+      {
+        method:'post',
+        headers:{
         'content-type':'application/json'
-      },body:{user}}
+      },body:JSON.stringify(user)}
     );
-
+    const token=await data.json();
+    const authtoken=token['auth-token'];
+    console.log(authtoken);
+    localStorage.setItem('auth-token',authtoken);
+    if(authtoken){
+      navigate('/');
+    }
+    else{
+      alert("Invalid credentials")
+    }
   }
   const handlechange=(e:any)=>{
     setuser((prev:any)=>({
