@@ -8,6 +8,7 @@ import {
 } from "react-router-dom"
 import { Signup } from "./Components/Signup";
 import { Createpost } from "./Components/Createpost";
+import { Profile } from "./Components/Profile";
 export default function Home() {
   return (
     <> 
@@ -15,6 +16,7 @@ export default function Home() {
       <Routes>
 
       <Route  path="/" element={<Main/>}/>
+      <Route  path="/profile/:id" element={<Profile/>}/>
       <Route element={<Login/>} path="/login"/>
       <Route element={<Signup/>} path="/signup"/>
       <Route element={<Createpost/>} path="/createpost"/>

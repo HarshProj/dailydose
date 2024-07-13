@@ -5,6 +5,7 @@ const jwt=require('jsonwebtoken');
 const bcrypt=require('bcryptjs');
 const {body,validationResult}=require('express-validator');
 const User = require('../Models/User');
+const fetchuser = require('../middleware/fetchuser');
 router.post('/createuser',[
     body('name',"Enter a valid name").isLength({min:3}),
     body('email',"Enter a valid email").isEmail(),
@@ -81,5 +82,8 @@ router.post('/login',[
         console.log("Some error"); 
         res.status(500).send("Some error occured");
     } 
+})
+router.get('/getuser',fetchuser,(req,res)=>{
+    return res.status(200).send({info:req.user});
 })
 module.exports=router;

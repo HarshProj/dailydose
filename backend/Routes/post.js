@@ -58,13 +58,14 @@ router.post('/like/:id',fetchuser,async(req,res)=>{
         res.send("Invalid post")
     }
     try {  
-        const userid=req.user.id;
+        const userid=req.user;
+        // console.log(userid);
         const likes=await Post.updateOne({_id:id},{$addToSet: {likes: userid}})
         if(!likes.modifiedCount){
-            res.status(200).send("AlreadyLiked");
+            res.status(200).send({liked:false});
             return ;
         }
-        res.send("Liked");
+        res.send({liked:true});
         console.log("Liked");
     } catch (error) {
         res.status(500).send(error)
