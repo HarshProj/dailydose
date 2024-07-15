@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams,Link } from 'react-router-dom';
+interface User {
+  name: string;
+  work: string;
+}
 
+interface Post {
+  _id: string;
+  userid: string;
+  username: string;
+  description: string;
+  likes: any[];
+}
 export const Profile = () => {
-  const [posts,setPosts]=useState([]);
-  const [like,setLike]=useState(false);
-  const {id}=useParams();
-  const navigate=useNavigate();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [like, setLike] = useState(false);
+  const [user, setUser] = useState('');
+  const [data, setData] = useState<User | null>(null);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   useEffect(()=>{
     if(localStorage.getItem('auth-token')){
     fetchallposts();
@@ -13,10 +26,25 @@ export const Profile = () => {
     else{
       navigate('/');
     }
+    getuser();
   },[])
   useEffect(()=>{
     fetchallposts();
   },[like])
+  const getuser=async()=>{
+    const jwt=localStorage.getItem('auth-token');
+    if(jwt){
+    const data=await fetch("http://localhost:5000/api/auth/getuser",{
+      headers:{
+        'content-type':'application/json',
+           'auth-token':jwt
+      }
+    })
+    const info=await data.json();
+    console.log(info)
+    setData(info);
+  }
+  }
   const fetchallposts = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/post/getposts');
@@ -24,9 +52,10 @@ export const Profile = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       const filter =data.filter((fil:any)=>fil.userid==id);
-      setPosts(filter );
+      setPosts(filter);
+      // setuser(filter[0].username);
+      setUser(filter[0].username);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
@@ -46,13 +75,7 @@ export const Profile = () => {
        },
    })
   const {liked}=await post.json();
-  // if(liked){
     setLike(!like);
-  // }
-  // else{
-    // setLike(false);
-    
-  // }
   }
 }
   const logout=()=>{
@@ -72,14 +95,14 @@ export const Profile = () => {
            <div className="h-[20vh] bg-slate-300 "></div>
             <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] rounded-full border "></div>
             <div className=" absolute bottom-2 right-5">
-                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl'>edit</button></div>
+                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl'><Link to='/updateuser'></Link> edit</button></div>
             </div>
 
         </div>
         <div className="pt-5 pl-5">
         <div className=" h-[20vh] flex flex-col gap-3">
-          <div className="text-3xl">Jhon Doe</div>
-          <div className="text-lg ">Software engineer at Tesla ,full stack web developer,Data analyst.</div>
+          <div className="text-3xl">{data?.name}</div>
+          <div className="text-lg ">{(data?.work)}.</div>
         </div>
           </div>
         <div className=" h-full flex-col flex s">

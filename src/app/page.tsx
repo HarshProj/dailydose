@@ -9,6 +9,7 @@ import {
 import { Signup } from "./Components/Signup";
 import { Createpost } from "./Components/Createpost";
 import { Profile } from "./Components/Profile";
+import { Editdetails } from "./Components/Editdetails";
 export default function Home() {
   return (
     <> 
@@ -20,6 +21,7 @@ export default function Home() {
       <Route element={<Login/>} path="/login"/>
       <Route element={<Signup/>} path="/signup"/>
       <Route element={<Createpost/>} path="/createpost"/>
+      <Route element={<Editdetails/>} path="/updateuser"/>
       </Routes>
 
     </Router>

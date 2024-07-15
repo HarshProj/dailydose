@@ -83,7 +83,25 @@ router.post('/login',[
         res.status(500).send("Some error occured");
     } 
 })
-router.get('/getuser',fetchuser,(req,res)=>{
-    return res.status(200).send({info:req.user});
+router.get('/getuser',fetchuser,async(req,res)=>{
+    const data=await User.findOne({_id:req.user});
+    if(!data){
+        return res.send({info:"user does not exists"})
+    }
+    console.log(data);
+    return res.status(200).json(data);
+})
+router.post('/updateuser',fetchuser,async(req,res)=>{
+    try {
+        const {work}=req.body;
+        const user=await User.updateOne({_id:req.user},{work});
+        if(!user){
+            res.send({msg:"erorr"})
+        }
+        res.send({msg:true});
+        
+    } catch (error) {
+        res.send(error)
+    }
 })
 module.exports=router;

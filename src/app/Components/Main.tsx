@@ -54,10 +54,10 @@ export const Main = () => {
     <div className="w-[60%] h-full flex-col flex shadow-lg">
       {posts.map((e:any)=>(
     <div className="pl-3 border w-full h-full mt-5">
-      <div className="w-full h-10">{e.username}</div>
-      <div className="w-full h-20 ">{e.description}</div>
+      <div className="w-full h-10" key={e.username}>{e.username}</div>
+      <div className="w-full h-20 " key={e.description}>{e.description}</div>
       <div className="h-10 flex">
-        <div className="">{e.likes.length}</div>
+        <div className="" key={e.likes.length}>{e.likes.length}</div>
          
         <div className="ml-2 cursor-pointer" onClick={()=>liked(e._id)}>Likes</div>
         

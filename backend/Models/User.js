@@ -12,6 +12,9 @@ const UserSchema=new Schema({
         require:true,
         unique:true
     },
+    work:{
+        type:String
+    },
     password:{
         type:String,
         require:true,

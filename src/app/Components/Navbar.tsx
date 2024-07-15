@@ -8,7 +8,7 @@ export const Navbar = () => {
   useEffect(()=>{
     if(localStorage.getItem('auth-token')){
       setToken(true);
-      getuser();
+      // getuser();
       
     }
     else{
@@ -29,9 +29,9 @@ export const Navbar = () => {
            'auth-token':jwt
       }
     })
-    const {info}=await data.json();
-    // console.log(info)
-    setId(info);
+    const info=await data.json();
+    console.log(info)
+    setId(info._id);
   }
   }
   const profile=()=>{
