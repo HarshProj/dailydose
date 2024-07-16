@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Navbar } from './Navbar'
+import { useNavigate } from 'react-router-dom';
 
 export const Main = () => {
   const [posts,setPosts]=useState([]);
   const [like,setLike]=useState(false);
+  const navigate=useNavigate();
   useEffect(()=>{
     fetchallposts();
     console.log(posts)
@@ -48,13 +50,20 @@ export const Main = () => {
   // }
   }
 }
+const profile=(id:any)=>{
+  if(localStorage.getItem('auth-token')){
+
+    navigate(`/profile/${id}`)
+  }
+}
   return (
     <div className='flex w-full h-full flex-col items-center '>
     <Navbar/>
     <div className="w-[60%] h-full flex-col flex shadow-lg">
       {posts.map((e:any)=>(
     <div className="pl-3 border w-full h-full mt-5">
-      <div className="w-full h-10" key={e.username}>{e.username}</div>
+      <div className="w-full h-10 cursor-pointer" onClick={()=>{profile(e.userid)}} key={e.username}>{e.username}</div>
+      {/* {new Date(e.date).toLocaleDateString()} */}
       <div className="w-full h-20 " key={e.description}>{e.description}</div>
       <div className="h-10 flex">
         <div className="" key={e.likes.length}>{e.likes.length}</div>

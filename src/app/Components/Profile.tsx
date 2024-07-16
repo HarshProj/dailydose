@@ -3,19 +3,20 @@ import { useNavigate, useParams,Link } from 'react-router-dom';
 interface User {
   name: string;
   work: string;
+  _id: string;
 }
 
 interface Post {
-  _id: string;
-  userid: string;
-  username: string;
   description: string;
-  likes: any[];
+  username: string;
+  userid: string;
+  likes: string[];
+  date: string;
 }
 export const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [like, setLike] = useState(false);
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(false);
   const [data, setData] = useState<User | null>(null);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -27,22 +28,29 @@ export const Profile = () => {
       navigate('/');
     }
     getuser();
+    
   },[])
   useEffect(()=>{
     fetchallposts();
-  },[like])
+  },[like,posts])
+  
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
-    const data=await fetch("http://localhost:5000/api/auth/getuser",{
+    const data=await fetch(`http://localhost:5000/api/auth/getuser/${id}`,{
       headers:{
         'content-type':'application/json',
            'auth-token':jwt
       }
     })
-    const info=await data.json();
+    const {info,diff}=await data.json();
     console.log(info)
     setData(info);
+    if(diff){
+      setUser(true)
+    }
+    else
+    setUser(false);
   }
   }
   const fetchallposts = async () => {
@@ -52,18 +60,18 @@ export const Profile = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      const filter =data.filter((fil:any)=>fil.userid==id);
+      const filter = data
+      .filter((fil:any) => fil.userid === id)
+      .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime());;
       setPosts(filter);
       // setuser(filter[0].username);
-      setUser(filter[0].username);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
   };
-  const liked=async(e:any)=>{
+  const liked=async(id:any)=>{
     // e.preventDefault();
     const token = localStorage.getItem('auth-token');
-    const id=e;
     console.log(id);
    if (token) {
        
@@ -84,30 +92,49 @@ export const Profile = () => {
       navigate('/')
     }
   }
+  const deletepost=async(id:string)=>{
+    const token = localStorage.getItem('auth-token');
+    // console.log(id);
+   if (token) {
+       
+   const post=await fetch(`http://localhost:5000/api/post/deletepost/${id}`,{
+       method:'delete',
+       headers:{
+       'content-type':'application/json',
+           'auth-token':token
+       },
+   })
+  const {data}=await post.json();
+   console.log(data);
+  }
+  }
   return (
     <div className='flex w-full h-full flex-col items-center '>
         <div className="w-[60%] h-full flex-col flex shadow-lg">
             <div className="">
 
             <div className="relative h-[30vh]">
-            <div className=" absolute top-2 right-5">
-                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={logout}>Logout</button></div>
+            {user?"":<div className=" absolute top-2 right-5">
+                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={logout}>Logout</button></div>}
            <div className="h-[20vh] bg-slate-300 "></div>
             <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] rounded-full border "></div>
-            <div className=" absolute bottom-2 right-5">
-                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl'><Link to='/updateuser'></Link> edit</button></div>
+           {user?"": <div className=" absolute bottom-2 right-5">
+                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{navigate('/updateuser')}}>edit </button></div>}
             </div>
 
         </div>
         <div className="pt-5 pl-5">
         <div className=" h-[20vh] flex flex-col gap-3">
+          
           <div className="text-3xl">{data?.name}</div>
           <div className="text-lg ">{(data?.work)}.</div>
         </div>
           </div>
         <div className=" h-full flex-col flex s">
       {posts.map((e:any)=>(
-    <div className="pt-5 pl-5 border w-full h-full mt-5">
+    <div className="pt-5 pl-5 border w-full h-full mt-5 relative" >
+      {user?"":<div className=" absolute top-2 right-5">
+        <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>deletepost(e._id)}>delete</button></div>}
       <div className="w-full h-10">{e.username}</div>
       <div className="w-full h-20 ">{e.description}</div>
       <div className="h-10 flex">

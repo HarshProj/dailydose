@@ -91,6 +91,20 @@ router.get('/getuser',fetchuser,async(req,res)=>{
     console.log(data);
     return res.status(200).json(data);
 })
+router.get('/getuser/:id',fetchuser,async(req,res)=>{
+    const {id}=req.params;
+    const info=await User.findOne({_id:id});
+    if(!info){
+        return res.send({inf:"user does not exists"})
+    }
+    
+    console.log(info);
+    if(id!=req.user)
+    return res.status(200).send({info,diff:true});
+
+    return res.status(200).json({info,diff:false});
+    
+})
 router.post('/updateuser',fetchuser,async(req,res)=>{
     try {
         const {work}=req.body;

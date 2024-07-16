@@ -20,7 +20,8 @@ router.post('/createpost',fetchuser,async(req,res)=>{
         description,
         userid:id,
         likes:[],
-        username:name
+        username:name,
+        date:new Date()
     })
     post.save()
     .then(async()=>{ 
@@ -35,7 +36,7 @@ router.post('/createpost',fetchuser,async(req,res)=>{
 })
 router.delete("/deletepost/:id",fetchuser,async(req,res)=>{
     const postid=req.params.id;
-    const {id}=req.user;
+    const id=req.user;
     if(!id){
         res.send(500).send("id Not found")
     }
@@ -46,6 +47,9 @@ router.delete("/deletepost/:id",fetchuser,async(req,res)=>{
             return ;
         }
         const data=await User.updateOne({_id:id},{$pull:{post:postid}})
+        if(!data){
+            res.send("Cannot pull the post")
+        }
         await Post.deleteOne({_id:postid}); 
         res.send(data);
     } catch (error) {
