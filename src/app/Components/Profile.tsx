@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams,Link } from 'react-router-dom';
+import {Heart} from "@phosphor-icons/react";
 interface User {
   name: string;
   work: string;
@@ -19,11 +20,14 @@ export const Profile = () => {
   const [user, setUser] = useState(false);
   const [data, setData] = useState<User | null>(null);
   const { id } = useParams<{ id: string }>();
+  const [del,setdel]=useState(true);
+  const [uid,setuid]=useState('');
   const navigate = useNavigate();
   useEffect(()=>{
     if(localStorage.getItem('auth-token')){
     fetchallposts();
-    console.log(posts)}
+    // console.log(posts)
+  }
     else{
       navigate('/');
     }
@@ -32,7 +36,7 @@ export const Profile = () => {
   },[])
   useEffect(()=>{
     fetchallposts();
-  },[like,posts])
+  },[like,del])
   
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
@@ -43,14 +47,17 @@ export const Profile = () => {
            'auth-token':jwt
       }
     })
-    const {info,diff}=await data.json();
-    console.log(info)
+    const {info,diff,ui}=await data.json();
+    // console.log(info)
     setData(info);
     if(diff){
       setUser(true)
+      setuid(ui);
     }
-    else
+    else{
     setUser(false);
+    setuid(info._id);
+    }
   }
   }
   const fetchallposts = async () => {
@@ -64,6 +71,7 @@ export const Profile = () => {
       .filter((fil:any) => fil.userid === id)
       .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime());;
       setPosts(filter);
+      console.log(filter);
       // setuser(filter[0].username);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -134,13 +142,12 @@ export const Profile = () => {
       {posts.map((e:any)=>(
     <div className="pt-5 pl-5 border w-full h-full mt-5 relative" >
       {user?"":<div className=" absolute top-2 right-5">
-        <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>deletepost(e._id)}>delete</button></div>}
+        <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{deletepost(e._id);setdel(!del)}}>delete</button></div>}
       <div className="w-full h-10">{e.username}</div>
       <div className="w-full h-20 ">{e.description}</div>
       <div className="h-10 flex">
-        <div className="">{e.likes.length}</div>
-         
-        <div className="ml-2 cursor-pointer" onClick={()=>liked(e._id)}>Likes</div>
+      { e.likes.find((person:any) => person === uid)?<div className="cursor-pointer" onClick={()=>liked(e._id)}><Heart size={20} color='#ef4444' weight='fill' /></div>:<div className="cursor-pointer" onClick={()=>liked(e._id)}><Heart size={20} /></div>}
+      <div className="ml-1" key={e.likes.length}>{e.likes.length}</div>
       </div>
         
     </div>
