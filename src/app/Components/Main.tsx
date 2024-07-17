@@ -25,7 +25,7 @@ export const Main = () => {
       }
     })
     const info=await data.json();
-    // console.log(info)
+    console.log(info)
     setuid(info._id);
   }
   }

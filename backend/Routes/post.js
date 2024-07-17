@@ -4,7 +4,7 @@ const fetchuser = require('../middleware/fetchuser');
 const User = require('../Models/User');
 const router=express.Router();
 router.post('/createpost',fetchuser,async(req,res)=>{
-    const id=req.user;
+    const id=req.user.id;
     const {description}=req.body;
     if(!description){ 
        return  res.send({msg:"Enter description",success:false});
@@ -36,7 +36,7 @@ router.post('/createpost',fetchuser,async(req,res)=>{
 })
 router.delete("/deletepost/:id",fetchuser,async(req,res)=>{
     const postid=req.params.id;
-    const id=req.user;
+    const id=req.user.id;
     if(!id){
         res.send(500).send("id Not found")
     }
@@ -62,7 +62,7 @@ router.post('/like/:id',fetchuser,async(req,res)=>{
         res.send("Invalid post")
     }
     try {  
-        const userid=req.user;
+        const userid=req.user.id;
         // console.log(userid);
         const likes=await Post.updateOne({_id:id},{$addToSet: {likes: userid}})
         if(!likes.modifiedCount){

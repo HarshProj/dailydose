@@ -72,7 +72,8 @@ router.post('/login',[
             return res.status(400).send({error:"Please enter correct credentials"});
         }
         const data={
-            user:user.id
+            user:{
+            id:user.id} 
         }
         // console.log(user);
         const authtoken=jwt.sign(data,JWT_SECRET);
@@ -84,7 +85,8 @@ router.post('/login',[
     } 
 })
 router.get('/getuser',fetchuser,async(req,res)=>{
-    const data=await User.findOne({_id:req.user});
+    console.log(req.user);
+    const data=await User.findOne({_id:req.user.id});
     if(!data){
         return res.send({info:"user does not exists"})
     }
@@ -93,13 +95,13 @@ router.get('/getuser',fetchuser,async(req,res)=>{
 })
 router.get('/getuser/:id',fetchuser,async(req,res)=>{
     const {id}=req.params;
-    const info=await User.findOne({_id:id});
+    const info=await User.findOne({_id:id}); 
     if(!info){
         return res.send({inf:"user does not exists"})
     }
     
     console.log(info);
-    if(id!=req.user)
+    if(id!=req.user.id)
     return res.status(200).send({info,diff:true,ui:req.user});
 
     return res.status(200).json({info,diff:false});
