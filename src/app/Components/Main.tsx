@@ -6,6 +6,7 @@ export const Main = () => {
   const [posts,setPosts]=useState([]);
   const [like,setLike]=useState(false);
   const [uid,setuid]=useState('');
+  const [ai,setAi]=useState(false);
   const navigate=useNavigate();
   useEffect(()=>{
     fetchallposts();
@@ -74,8 +75,12 @@ const profile=(id:any)=>{
     navigate(`/profile/${id}`)
   }
 }
+const handleai=()=>{
+  if(localStorage.getItem('auth-token'))
+  setAi(!ai);
+}
   return (
-    <div className='flex w-full h-full flex-col items-center '>
+    <div className=' relative flex w-full h-full flex-col items-center '>
     <Navbar/>
     <div className="w-[60%] h-full flex-col flex shadow-lg">
       {posts.map((e:any)=>(
@@ -93,6 +98,21 @@ const profile=(id:any)=>{
     </div>
       ))}
     </div>
+    <div className="sticky ml-auto mr-10 bottom-5 h-full"> 
+      {ai?<div className="h-[80vh] w-64 border">
+        <div className="w-full h-[88%] ">
+          <h3 className='h-[10%]'>Chat</h3>
+          <div className="w-full p-3 h-[90%] border overflow-y-scroll ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis eligendi numquam laboriosam dicta animi quae eius. Maiores reprehenderit, cum esse explicabo atque ex dolor libero provident exercitationem vel molestiae maxime incidunt rerum dolorum alias saepe, tenetur quis. Recusandae commodi deserunt officia illo, ipsam optio a saepe repudiandae sed ratione! Obcaecati ab ducimus reprehenderit beatae vel.djbfdksdbvs.</div>
+        </div>
+        <form action="" className='flex gap-1'>
+          <input type="text" placeholder='Enetr Your querry here' className='w-[80%] p-3' />
+          <button className='bg-lime-400 w-[20%]'>Send</button>
+        </form>
+      </div>:""}
+      <div className="flex justify-end w-full">
+        <button className=" rounded-full p-2 bg-gray-500" onClick={handleai}>AI</button>
+        </div>
+      </div>
     </div>
   )
 }

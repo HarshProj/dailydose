@@ -18,6 +18,9 @@ export const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [like, setLike] = useState(false);
   const [user, setUser] = useState(false);
+  const [imgc, setImgc] = useState(false);
+  const [pic,setPic]=useState('');
+  const [url,setUrl]=useState('');
   const [data, setData] = useState<User | null>(null);
   const { id } = useParams<{ id: string }>();
   const [del,setdel]=useState(true);
@@ -116,8 +119,57 @@ export const Profile = () => {
    console.log(data);
   }
   }
+  const handlesubmit=()=>{
+    setImgc(!imgc);
+  }
+  const uploadpic=async(e:any)=>{
+    e.preventDefault();
+    // // setPic(files[0]);
+    console.log(pic);
+    const data = await new FormData()
+    await data.append("file" , pic)
+    data.append("upload_preset" , "e-comm")
+    data.append("cloud_name" , "dnjtwhe9o")
+    const val=await fetch("https://api.cloudinary.com/v1_1/dnjtwhe9o/image/upload",{
+      method: "post",
+      body: data
+    })
+    if(!val){
+      console.log("err")
+    }
+    else{
+      setUrl(val.url)
+      console.log(val.url)
+    }
+  }
+  const loadFile = (event:any) => {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function () {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  }
   return (
-    <div className='flex w-full h-full flex-col items-center '>
+    <div className='relative flex w-full h-full flex-col items-center '>
+      {imgc?
+      <div className="absolute w-full h-full flex  justify-center z-10  backdrop-blur-sm cursor-pointer overflow-y-hidden" >
+        
+        <div className="w-[40vh] h-[40vh] mt-[20vh] rounded-full bg-slate-300 cursor-pointer "><div className="absolute w-7 ml-auto" onClick={handlesubmit}>X</div> 
+          <img  className='w-full h-full rounded-full' id='output' alt="" />
+        <form action="" className='w-full h-full flex flex-col items-center justify-center gap-2'>
+          <input type="file" accept='image/*' 
+            onChange={
+              (event:any) => {
+                loadFile(event)
+                setPic(event.target.files[0])
+              }} className='text-sm w-full' />
+          <button onClick={uploadpic}>Submit</button>
+          
+        </form>
+        </div>
+
+      </div>
+        :""}
         <div className="w-[60%] h-full flex-col flex shadow-lg">
             <div className="">
 
@@ -125,7 +177,9 @@ export const Profile = () => {
             {user?"":<div className=" absolute top-2 right-5">
                 <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={logout}>Logout</button></div>}
            <div className="h-[20vh] bg-slate-300 "></div>
-            <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] rounded-full border "></div>
+            <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] flex items-center justify-center rounded-full border cursor-pointer" onClick={handlesubmit}>
+              
+            </div>
            {user?"": <div className=" absolute bottom-2 right-5">
                 <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{navigate('/updateuser')}}>edit </button></div>}
             </div>
