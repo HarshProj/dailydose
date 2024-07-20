@@ -12,6 +12,9 @@ const UserSchema=new Schema({
         require:true,
         unique:true
     },
+    image:{
+        type:String
+    },
     work:{
         type:String
     },

@@ -109,8 +109,7 @@ router.get('/getuser/:id',fetchuser,async(req,res)=>{
 })
 router.post('/updateuser',fetchuser,async(req,res)=>{
     try {
-        const {work}=req.body;
-        const user=await User.updateOne({_id:req.user.id},{work});
+        const user=await User.updateOne({_id:req.user.id},req.body);
         if(!user){
             res.send({msg:"erorr"})
         }

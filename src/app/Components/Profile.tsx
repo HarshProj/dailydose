@@ -5,6 +5,7 @@ interface User {
   name: string;
   work: string;
   _id: string;
+  image:string
 }
 
 interface Post {
@@ -40,7 +41,12 @@ export const Profile = () => {
   useEffect(()=>{
     fetchallposts();
   },[like,del])
-  
+  useEffect(()=>{
+    // if(data?.image){
+      getuser();
+      console.log("clicked")
+    // }
+  },[imgc])
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
@@ -51,8 +57,8 @@ export const Profile = () => {
       }
     })
     const {info,diff,ui}=await data.json();
-    // console.log(info)
     setData(info);
+    // console.log(info,info.image)
     if(diff){
       setUser(true)
       setuid(ui);
@@ -122,28 +128,62 @@ export const Profile = () => {
   const handlesubmit=()=>{
     setImgc(!imgc);
   }
-  const uploadpic=async(e:any)=>{
-    e.preventDefault();
-    // // setPic(files[0]);
-    console.log(pic);
-    const data = await new FormData()
-    await data.append("file" , pic)
-    data.append("upload_preset" , "e-comm")
-    data.append("cloud_name" , "dnjtwhe9o")
-    const val=await fetch("https://api.cloudinary.com/v1_1/dnjtwhe9o/image/upload",{
-      method: "post",
-      body: data
-    })
-    if(!val){
-      console.log("err")
+  useEffect(()=>{
+    if(url)
+    handleimg();
+  },[url])
+  const handleimg=async()=>{
+    const token = localStorage.getItem('auth-token');
+    if (!token) {
+        navigate('/');
+        return;
     }
-    else{
-      setUrl(val.url)
-      console.log(val.url)
-    }
+    const post=await fetch('http://localhost:5000/api/auth/updateuser',{
+      method:'post',
+      headers:{
+      'content-type':'application/json',
+          'auth-token':token
+      },
+      body:JSON.stringify({image:url})
+  })
+ const {msg}=await post.json();
+    console.log(msg) 
+    if(msg){
+      alert("Updated");
+      navigate(`/profile/${data?._id}`);
+     }
+     else{
+      console.log(msg);
+      alert("error occured")
+     }
   }
+  const uploadpic = async (e: any) => {
+    e.preventDefault();
+    console.log(pic);
+    const data1 = new FormData();
+    data1.append("file", pic);
+    data1.append("upload_preset", "e-comm");
+    data1.append("cloud_name", "dnjtwhe9o");
+  
+    try {
+      const response = await fetch("https://api.cloudinary.com/v1_1/dnjtwhe9o/image/upload", {
+        method: "post",
+        body: data1,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error uploading image to Cloudinary');
+      }
+  
+      const result = await response.json();
+      setUrl(result.url);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image");
+    }
+  };
   const loadFile = (event:any) => {
-    var output = document.getElementById('output');
+    var output = document.getElementById('output'); 
     output.src = URL.createObjectURL(event.target.files[0]);
     output.onload = function () {
       URL.revokeObjectURL(output.src) // free memory
@@ -155,8 +195,8 @@ export const Profile = () => {
       <div className="absolute w-full h-full flex  justify-center z-10  backdrop-blur-sm cursor-pointer overflow-y-hidden" >
         
         <div className="w-[40vh] h-[40vh] mt-[20vh] rounded-full bg-slate-300 cursor-pointer "><div className="absolute w-7 ml-auto" onClick={handlesubmit}>X</div> 
-          <img  className='w-full h-full rounded-full' id='output' alt="" />
-        <form action="" className='w-full h-full flex flex-col items-center justify-center gap-2'>
+          <img  className='w-full h-full rounded-full' id='output' src={data?.image} alt="" />
+        {!user?<form action="" className='w-full h-full flex flex-col items-center justify-center gap-2'>
           <input type="file" accept='image/*' 
             onChange={
               (event:any) => {
@@ -165,7 +205,7 @@ export const Profile = () => {
               }} className='text-sm w-full' />
           <button onClick={uploadpic}>Submit</button>
           
-        </form>
+        </form>:""}
         </div>
 
       </div>
@@ -175,10 +215,10 @@ export const Profile = () => {
 
             <div className="relative h-[30vh]">
             {user?"":<div className=" absolute top-2 right-5">
-                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={logout}>Logout</button></div>}
+                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl'  onClick={logout}>Logout</button></div>}
            <div className="h-[20vh] bg-slate-300 "></div>
-            <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] flex items-center justify-center rounded-full border cursor-pointer" onClick={handlesubmit}>
-              
+            <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] flex items-center justify-center rounded-full shadow-sm border cursor-pointer" onClick={handlesubmit}>
+              {data?.image?<img src={data?.image} alt="relode" className='w-[20vh] h-[20vh]  rounded-full' />:""}
             </div>
            {user?"": <div className=" absolute bottom-2 right-5">
                 <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{navigate('/updateuser')}}>edit </button></div>}
