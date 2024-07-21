@@ -21,4 +21,19 @@
   .text-balance {
     text-wrap: balance;
   }
+  .card-wrapper{
+    @apply relative bg-gradient-to-b from-slate-700 to-slate-800 overflow-hidden;
+  }
+  .card-wrapper::before{
+    background: conic-gradient(
+      rgba(244,114,182,0.4) 0deg,
+      rgba(192,132,252,0.4) 0deg,
+      transparent 80deg
+    );
+    /* z-index: -1; */
+    @apply absolute  h-[120%] w-[200%] left-[-50%] top-[-10%] content-[''] animate-border-spin;
+  }
+  .card-content{
+    @apply absolute w-[calc(100%-5px)] h-[calc(100%-5px)] top-[1px] left-[1px] bg-gradient-to-b from-slate-800 to-slate-900;
+  }
 }

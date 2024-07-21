@@ -194,8 +194,8 @@ export const Profile = () => {
       {imgc?
       <div className="absolute w-full h-full flex  justify-center z-10  backdrop-blur-sm cursor-pointer overflow-y-hidden" >
         
-        <div className="w-[40vh] h-[40vh] mt-[20vh] rounded-full bg-slate-300 cursor-pointer "><div className="absolute w-7 ml-auto" onClick={handlesubmit}>X</div> 
-          <img  className='w-full h-full rounded-full' id='output' src={data?.image} alt="" />
+        <div className="w-[40vh] h-[40vh] mt-[20vh] rounded-full bg-slate-300 cursor-pointer  "><div className="absolute w-7 ml-auto" onClick={handlesubmit}>X</div> 
+          <img  className='w-full h-full rounded-full ' id='output' src={data?.image} alt="" />
         {!user?<form action="" className='w-full h-full flex flex-col items-center justify-center gap-2'>
           <input type="file" accept='image/*' 
             onChange={
@@ -218,7 +218,7 @@ export const Profile = () => {
                 <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl'  onClick={logout}>Logout</button></div>}
            <div className="h-[20vh] bg-slate-300 "></div>
             <div className="absolute bottom-0 left-8 w-[20vh] h-[20vh] flex items-center justify-center rounded-full shadow-sm border cursor-pointer" onClick={handlesubmit}>
-              {data?.image?<img src={data?.image} alt="relode" className='w-[20vh] h-[20vh]  rounded-full' />:""}
+              {data?.image?<img src={data?.image} alt="relode" className='w-[20vh] h-[20vh]  rounded-full hover:border-red-400  border-2 transition-all duration-300' />:""}
             </div>
            {user?"": <div className=" absolute bottom-2 right-5">
                 <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{navigate('/updateuser')}}>edit </button></div>}
@@ -235,6 +235,7 @@ export const Profile = () => {
         <div className=" h-full flex-col flex s">
       {posts.map((e:any)=>(
     <div className="pt-5 pl-5 border w-full h-full mt-5 relative" >
+      
       {user?"":<div className=" absolute top-2 right-5">
         <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{deletepost(e._id);setdel(!del)}}>delete</button></div>}
       <div className="w-full h-10">{e.username}</div>
@@ -245,7 +246,10 @@ export const Profile = () => {
       </div>
         
     </div>
+      
+      
       ))}
+      
         </div>
             </div>
     </div>
