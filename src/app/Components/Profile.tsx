@@ -192,7 +192,7 @@ export const Profile = () => {
   return (
     <div className='relative flex w-full h-full flex-col items-center '>
       {imgc?
-      <div className="absolute w-full h-full flex  justify-center z-10  backdrop-blur-sm cursor-pointer overflow-y-hidden" >
+      <div className="absolute w-full h-full flex  justify-center z-10  backdrop-blur-sm cursor-pointer " >
         
         <div className="w-[40vh] h-[40vh] mt-[20vh] rounded-full bg-slate-300 cursor-pointer  "><div className="absolute w-7 ml-auto" onClick={handlesubmit}>X</div> 
           <img  className='w-full h-full rounded-full ' id='output' src={data?.image} alt="" />

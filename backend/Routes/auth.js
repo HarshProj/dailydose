@@ -96,7 +96,7 @@ router.get('/getuser',fetchuser,async(req,res)=>{
 router.get('/getuser/:id',fetchuser,async(req,res)=>{
     const {id}=req.params;
     const info=await User.findOne({_id:id}); 
-    if(!info){
+    if(!info||!id){
         return res.send({inf:"user does not exists"})
     }
     
