@@ -7,6 +7,9 @@ export const Main = () => {
   const [like,setLike]=useState(false);
   const [uid,setuid]=useState('');
   const [ai,setAi]=useState(false);
+  const [inp,setInp]=useState('');
+  const [aidata,setAidata]=useState('');
+  const [isloading,setIsloading]=useState(false);
   const navigate=useNavigate();
   useEffect(()=>{
     fetchallposts();
@@ -69,6 +72,30 @@ export const Main = () => {
   // }
   }
 }
+const generateai=async(e:any)=>{
+  e.preventDefault();
+  setIsloading(true);
+  const response=await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyBRNwJBiIW5ST32FALrQRG6Ww18bNeZ2ZY',{
+    method:'post',
+    headers:{
+      'content-type':'application/json',
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: inp }],
+        },
+      ],
+    }),
+  }
+
+  );
+  const info=await response.json();
+  console.log(info.candidates[0].content.parts[0].text);
+  setIsloading(false);
+  setAidata(info.candidates[0].content.parts[0].text)
+}
 const profile=(id:any)=>{
   if(localStorage.getItem('auth-token')){
 
@@ -101,13 +128,13 @@ const handleai=()=>{
     <div className="sticky ml-auto mr-10 bottom-5 h-full"> 
       {ai?<div className="h-[80vh] bg-white w-64 border">
         <div className="w-full h-[88%] ">
-          <h3 className='h-[10%]'>Chat</h3>
-          <div className="w-full p-3 h-[90%] border overflow-y-scroll ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis eligendi numquam laboriosam dicta animi quae eius. Maiores reprehenderit, cum esse explicabo atque ex dolor libero provident exercitationem vel molestiae maxime incidunt rerum dolorum alias saepe, tenetur quis. Recusandae commodi deserunt officia illo, ipsam optio a saepe repudiandae sed ratione! Obcaecati ab ducimus reprehenderit beatae vel.djbfdksdbvs.</div>
+          <h3 className='h-[10%] w-full text-center'>Chat Bot</h3>
+          <div className="w-full p-3 h-[90%] border overflow-y-scroll ">{aidata}</div>
         </div>
-        <form action="" className='flex gap-1'>
-          <input type="text" placeholder='Enetr Your querry here' className='w-[80%] p-3' />
-          <button className='bg-lime-400 w-[20%]'>Send</button>
-        </form>
+        {isloading?"Generating...":<form action="" className='flex gap-1'>
+          <input type="text" placeholder='Enetr Your querry here' className='w-[80%] p-3' onChange={(e:any)=>{setInp(e.target.value)}}/>
+          <button className='bg-lime-400 w-[20%]' onClick={generateai}>Send</button>
+        </form>}
       </div>:""}
       <div className="flex justify-end w-full">
         <button className=" rounded-full p-2 bg-gray-500" onClick={handleai}>AI</button>

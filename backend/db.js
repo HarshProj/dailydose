@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
-const uri="mongodb+srv://hharshchauhan1:uKQtGm59pr1vcd3R@dailydose.klnieoi.mongodb.net/?retryWrites=true&w=majority&appName=dailydose"
+// const uri="mongodb+srv://hharshchauhan1:uKQtGm59pr1vcd3R@dailydose.klnieoi.mongodb.net/?retryWrites=true&w=majority&appName=dailydose"
+const uri="mongodb://localhost:27017/DailyDose"
 const connecttodb=()=>{
     mongoose.connect(uri)
     .then(()=>{
