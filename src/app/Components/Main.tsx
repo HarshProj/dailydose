@@ -8,9 +8,10 @@ export const Main = () => {
   const [uid,setuid]=useState('');
   const [ai,setAi]=useState(false);
   const [inp,setInp]=useState('');
-  const [aidata,setAidata]=useState('');
+  const [aidata,setAidata]=useState(" Ask me anything... ");
   const [isloading,setIsloading]=useState(false);
   const navigate=useNavigate();
+  const {API_KEY}=process.env;
   useEffect(()=>{
     fetchallposts();
     console.log(posts)
@@ -75,7 +76,7 @@ export const Main = () => {
 const generateai=async(e:any)=>{
   e.preventDefault();
   setIsloading(true);
-  const response=await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyBRNwJBiIW5ST32FALrQRG6Ww18bNeZ2ZY',{
+  const response=await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`,{
     method:'post',
     headers:{
       'content-type':'application/json',
