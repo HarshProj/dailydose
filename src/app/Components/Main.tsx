@@ -42,7 +42,7 @@ export const Main = () => {
       }
       const data = await response.json();
       const filter = data
-      .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime());;
+      .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setPosts(filter);
       console.log(filter)
     } catch (error) {
