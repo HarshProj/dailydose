@@ -191,6 +191,7 @@ export const Profile = () => {
   }
   return (
     <div className='relative flex w-full h-full flex-col items-center '>
+      {/* <a href="/hello/">goto</a> */}
       {imgc?
       <div className="absolute w-full h-full flex  justify-center z-10  backdrop-blur-sm cursor-pointer " >
         

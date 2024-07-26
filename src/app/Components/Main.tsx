@@ -109,6 +109,7 @@ const handleai=()=>{
 }
   return (
     <div className=' relative flex w-full h-full flex-col items-center '>
+      
     <Navbar/>
     <div className="w-[60%] h-full flex-col flex shadow-lg">
       {posts.map((e:any)=>(
