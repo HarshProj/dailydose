@@ -111,7 +111,7 @@ const handleai=()=>{
     <div className=' relative flex w-full h-full flex-col items-center '>
       
     <Navbar/>
-    <div className="w-[60%] h-full flex-col flex shadow-lg">
+    <div className="w-[60%] max-sm:w-[95%]  h-full flex-col flex shadow-lg">
       {posts.map((e:any)=>(
     <div className="pl-3 border w-full h-full mt-5 ">
       <div className="w-full h-10 cursor-pointer" onClick={()=>{profile(e.userid)}} key={e.username}>{e.username}</div>
