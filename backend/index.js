@@ -12,6 +12,6 @@ app.use('/api/post',require('./Routes/post'));
 app.get('/',(req,res)=>{
     res.send("Home")
 })  
-app.listen(process.env.port,()=>{
-console.log("Listening at port",process.env.port);
+app.listen(5000,()=>{
+console.log("Listening at port",5000);
 })
