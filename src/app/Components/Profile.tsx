@@ -185,7 +185,7 @@ export const Profile = () => {
     }
   };
   const loadFile = (event:any) => {
-    var output = document.getElementById('output'); 
+    var output:any = document.getElementById('output'); 
     output.src = URL.createObjectURL(event.target.files[0]);
     output.onload = function () {
       URL.revokeObjectURL(output.src) // free memory
