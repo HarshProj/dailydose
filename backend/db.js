@@ -1,8 +1,9 @@
+require('dotenv').config()
 const mongoose=require('mongoose');
-// const uri="mongodb+srv://hharshchauhan1:uKQtGm59pr1vcd3R@dailydose.klnieoi.mongodb.net/?retryWrites=true&w=majority&appName=dailydose"
-const uri="mongodb://localhost:27017/DailyDose"
+const uri=process.env.mongo_uri
 const connecttodb=()=>{
-    mongoose.connect(uri)
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+
     .then(()=>{
         console.log("Connected to db")
     })
