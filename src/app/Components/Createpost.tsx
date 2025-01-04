@@ -34,7 +34,7 @@ export const Createpost = () => {
     navigate('/');
    }
    else{
-    console.log(msg);
+    // console.log(msg);
     alert("error occured")
    }
   }
@@ -43,7 +43,7 @@ export const Createpost = () => {
       ...prev,
       [e.target.name]:e.target.value,
     }))
-    console.log(user);
+    // console.log(user);
   }
   return (
     <>

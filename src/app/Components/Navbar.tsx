@@ -1,4 +1,5 @@
 // import Link from 'next/link';
+"use client"
 import React, { use, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 export const Navbar = () => {
@@ -25,14 +26,14 @@ export const Navbar = () => {
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
-    const data=await fetch("${backendurl}/api/auth/getuser",{
+    const data=await fetch(`${backendurl}/api/auth/getuser`,{
       headers:{
         'content-type':'application/json',
            'auth-token':jwt
       }
     })
     const info=await data.json();
-    console.log(info)
+    // console.log(info)
     setId(info._id);
   }
   }

@@ -22,7 +22,7 @@ export const Main = () => {
   },[like])
   
   const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
-  console.log(backendurl)
+  // console.log(backendurl)
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
@@ -33,7 +33,7 @@ export const Main = () => {
       }
     })
     const info=await data.json();
-    console.log(info)
+    // console.log(info)
     setuid(info._id);
   }
   }
@@ -47,7 +47,7 @@ export const Main = () => {
       const filter = data
       .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setPosts(filter);
-      console.log(filter)
+      // console.log(filter)
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
@@ -56,7 +56,7 @@ export const Main = () => {
     // e.preventDefault(); 
     const token = localStorage.getItem('auth-token');
     const id=e;
-    console.log(id);
+    // console.log(id);
    if (token) {
        
    const post=await fetch(`${backendurl}/api/post/like/${id}`,{
@@ -96,7 +96,7 @@ const generateai=async(e:any)=>{
 
   );
   const info=await response.json();
-  console.log(info.candidates[0].content.parts[0].text);
+  // console.log(info.candidates[0].content.parts[0].text);
   setIsloading(false);
   setAidata(info.candidates[0].content.parts[0].text)
 }
@@ -115,8 +115,8 @@ const handleai=()=>{
       
     <Navbar/>
     <div className="w-[60%] max-sm:w-[95%]  h-full flex-col flex shadow-lg">
-      {posts.map((e:any)=>(
-    <div className="pl-3 border w-full h-full mt-5 ">
+      {posts.map((e:any,ind)=>(
+    <div className="pl-3 border w-full h-full mt-5 " key={ind}>
       <div className="w-full h-10 cursor-pointer" onClick={()=>{profile(e.userid)}} key={e.username}>{e.username}</div>
       {/* {new Date(e.date).toLocaleDateString()} */}
       <div className="w-full h-20 " key={e.description}>{e.description}</div>

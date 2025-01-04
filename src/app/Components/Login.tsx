@@ -10,7 +10,7 @@ export const Login = () => {
   const navigate=useNavigate();
   const handlelogin=async (e: React.FormEvent) => {
     e.preventDefault(); 
-    console.log(user)
+    // console.log(user)
     const data=await fetch(`${backendurl}/api/auth/login`,
       {
         method:'post',
@@ -20,7 +20,7 @@ export const Login = () => {
     );
     const token=await data.json();
     const authtoken=token['auth-token'];
-    console.log(authtoken);
+    // console.log(authtoken);
     localStorage.setItem('auth-token',authtoken);
     if(authtoken){
       navigate('/');
@@ -34,7 +34,7 @@ export const Login = () => {
       ...prev,
       [e.target.name]:e.target.value,
     }))
-    console.log(user);
+    // console.log(user);
   }
   return (
     <div className='flex flex-col bg-gradient-to-r from-cyan-500 to-blue-500 items-center justify-center w-full h-screen'>

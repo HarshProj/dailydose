@@ -4,12 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 export const Signup = () => {
   const [user,setuser]=useState({email:"",password:"",name:"",cpassword:""});
   const navigate=useNavigate();
+  
+  const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   const handlesignup=async (e: React.FormEvent) => {
     e.preventDefault(); 
-    console.log(user);
+    // console.log(user);
     const {email,name,password,cpassword}=user;
     if(password===cpassword){
-    const data=await fetch('http://localhost:5000/api/auth/createuser',
+    const data=await fetch(`${backendurl}/api/auth/createuser`,
       {
         method:'post',
         headers:{
@@ -18,7 +20,7 @@ export const Signup = () => {
     );
     const token=await data.json();
     const authtoken=token['auth-token'];
-    console.log(authtoken);
+    // console.log(authtoken);
     localStorage.setItem('auth-token',authtoken);
   
     if(authtoken){
@@ -38,7 +40,7 @@ export const Signup = () => {
       ...prev,
       [e.target.name]:e.target.value,
     }))
-    console.log(user);
+    // console.log(user);
   }
   return (
     <div className='flex flex-col bg-gradient-to-r from-cyan-500 to-blue-500 items-center justify-center w-full h-screen'>

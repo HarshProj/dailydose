@@ -1,3 +1,5 @@
+
+"use client"
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 interface User {
@@ -29,7 +31,7 @@ export const Editdetails = () => {
       }
     })
     const info=await data.json();
-    console.log(info)
+    // console.log(info)
     setData(info);
     setuser({work:info.work})
   }
@@ -65,7 +67,7 @@ export const Editdetails = () => {
       ...prev,
       [e.target.name]:e.target.value,
     }))
-    console.log(user);
+    // console.log(user);
   }
   return (
     <>

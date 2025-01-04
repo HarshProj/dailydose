@@ -82,7 +82,7 @@ export const Profile = () => {
       .filter((fil:any) => fil.userid === id)
       .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime());;
       setPosts(filter);
-      console.log(filter);
+      // console.log(filter);
       // setuser(filter[0].username);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -91,7 +91,7 @@ export const Profile = () => {
   const liked=async(id:any)=>{
     // e.preventDefault();
     const token = localStorage.getItem('auth-token');
-    console.log(id);
+    // console.log(id);
    if (token) {
        
    const post=await fetch(`${backendurl}/api/post/like/${id}`,{
@@ -124,7 +124,7 @@ export const Profile = () => {
        },
    })
   const {data}=await post.json();
-   console.log(data);
+  //  console.log(data);
   }
   }
   const handlesubmit=()=>{
@@ -149,7 +149,7 @@ export const Profile = () => {
       body:JSON.stringify({image:url})
   })
  const {msg}=await post.json();
-    console.log(msg) 
+    // console.log(msg) 
     if(msg){
       alert("Updated");
       navigate(`/profile/${data?._id}`);
@@ -161,7 +161,7 @@ export const Profile = () => {
   }
   const uploadpic = async (e: any) => {
     e.preventDefault();
-    console.log(pic);
+    // console.log(pic);
     const data1 = new FormData();
     data1.append("file", pic);
     data1.append("upload_preset", "e-comm");
