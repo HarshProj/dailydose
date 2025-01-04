@@ -6,7 +6,7 @@ app.use(cors());
 
 const connect=require('./db');
 connect(); 
-cosnt port=process.env.PORT||5000;
+const port=process.env.PORT||5000;
 app.use(express.json())
 app.use('/api/auth',require('./Routes/auth'));
 app.use('/api/post',require('./Routes/post'));
