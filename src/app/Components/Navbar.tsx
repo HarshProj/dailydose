@@ -5,6 +5,8 @@ export const Navbar = () => {
   const navigate=useNavigate();
   const [token,setToken]=useState(false);
   const [id,setId]=useState();
+  
+  const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   useEffect(()=>{
     if(localStorage.getItem('auth-token')){
       setToken(true);
@@ -23,7 +25,7 @@ export const Navbar = () => {
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
-    const data=await fetch("http://localhost:5000/api/auth/getuser",{
+    const data=await fetch("${backendurl}/api/auth/getuser",{
       headers:{
         'content-type':'application/json',
            'auth-token':jwt

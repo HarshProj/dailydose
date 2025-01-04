@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 export const Createpost = () => {
     // const [token,setToken]=useState(false);
-    
+    const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   const [user,setuser]=useState({description:""});
     const navigate=useNavigate();
   useEffect(()=>{
@@ -20,7 +20,7 @@ export const Createpost = () => {
         return;
     }
     const {description}=user;
-    const post=await fetch('http://localhost:5000/api/post/createpost',{
+    const post=await fetch(`${backendurl}/api/post/createpost`,{
         method:'post',
         headers:{
         'content-type':'application/json',

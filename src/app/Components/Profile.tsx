@@ -16,6 +16,8 @@ interface Post {
   date: string;
 }
 export const Profile = () => {
+  
+  const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   const [posts, setPosts] = useState<Post[]>([]);
   const [like, setLike] = useState(false);
   const [user, setUser] = useState(false);
@@ -50,7 +52,7 @@ export const Profile = () => {
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
-    const data=await fetch(`http://localhost:5000/api/auth/getuser/${id}`,{
+    const data=await fetch(`${backendurl}/api/auth/getuser/${id}`,{
       headers:{
         'content-type':'application/json',
            'auth-token':jwt
@@ -71,7 +73,7 @@ export const Profile = () => {
   }
   const fetchallposts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/post/getposts');
+      const response = await fetch(`${backendurl}/api/post/getposts`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -92,7 +94,7 @@ export const Profile = () => {
     console.log(id);
    if (token) {
        
-   const post=await fetch(`http://localhost:5000/api/post/like/${id}`,{
+   const post=await fetch(`${backendurl}/api/post/like/${id}`,{
        method:'post',
        headers:{
        'content-type':'application/json',
@@ -114,7 +116,7 @@ export const Profile = () => {
     // console.log(id);
    if (token) {
        
-   const post=await fetch(`http://localhost:5000/api/post/deletepost/${id}`,{
+   const post=await fetch(`${backendurl}/api/post/deletepost/${id}`,{
        method:'delete',
        headers:{
        'content-type':'application/json',
@@ -138,7 +140,7 @@ export const Profile = () => {
         navigate('/');
         return;
     }
-    const post=await fetch('http://localhost:5000/api/auth/updateuser',{
+    const post=await fetch(`${backendurl}/api/auth/updateuser`,{
       method:'post',
       headers:{
       'content-type':'application/json',

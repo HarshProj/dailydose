@@ -5,11 +5,13 @@ import { Link, useNavigate } from 'react-router-dom'
 
 export const Login = () => {
   const [user,setuser]=useState({email:"",password:""});
+  
+  const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   const navigate=useNavigate();
   const handlelogin=async (e: React.FormEvent) => {
     e.preventDefault(); 
     console.log(user)
-    const data=await fetch('http://localhost:5000/api/auth/login',
+    const data=await fetch(`${backendurl}/api/auth/login`,
       {
         method:'post',
         headers:{

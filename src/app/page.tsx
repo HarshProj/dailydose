@@ -11,6 +11,7 @@ import { Createpost } from "./Components/Createpost";
 import { Profile } from "./Components/Profile";
 import { Editdetails } from "./Components/Editdetails";
 export default function Home() {
+
   return (
     <> 
     <Router>

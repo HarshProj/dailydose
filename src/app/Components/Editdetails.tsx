@@ -7,6 +7,8 @@ interface User {
   }
   
 export const Editdetails = () => {
+  
+  const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
     const [data, setData] = useState<User | null>(null);
   const [user,setuser]=useState({work:""});
     const navigate=useNavigate();
@@ -20,7 +22,7 @@ export const Editdetails = () => {
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
-    const data=await fetch("http://localhost:5000/api/auth/getuser",{
+    const data=await fetch(`${backendurl}/api/auth/getuser`,{
       headers:{
         'content-type':'application/json',
            'auth-token':jwt
@@ -40,7 +42,7 @@ export const Editdetails = () => {
         return;
     }
     const {work}=user;
-    const post=await fetch('http://localhost:5000/api/auth/updateuser',{
+    const post=await fetch(`${backendurl}/api/auth/updateuser`,{
         method:'post',
         headers:{
         'content-type':'application/json',

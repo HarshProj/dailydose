@@ -20,10 +20,13 @@ export const Main = () => {
   useEffect(()=>{
     fetchallposts();
   },[like])
+  
+  const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
+  console.log(backendurl)
   const getuser=async()=>{
     const jwt=localStorage.getItem('auth-token');
     if(jwt){
-    const data=await fetch("http://localhost:5000/api/auth/getuser",{
+    const data=await fetch(`${backendurl}/api/auth/getuser`,{
       headers:{
         'content-type':'application/json',
            'auth-token':jwt
@@ -36,7 +39,7 @@ export const Main = () => {
   }
   const fetchallposts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/post/getposts');
+      const response = await fetch(`${backendurl}/api/post/getposts`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -56,7 +59,7 @@ export const Main = () => {
     console.log(id);
    if (token) {
        
-   const post=await fetch(`http://localhost:5000/api/post/like/${id}`,{
+   const post=await fetch(`${backendurl}/api/post/like/${id}`,{
        method:'post',
        headers:{
        'content-type':'application/json',
