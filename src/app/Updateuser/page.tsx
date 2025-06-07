@@ -1,22 +1,22 @@
 
 "use client"
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 interface User {
     name: string;
     work: string;
     _id:string
   }
   
-export const Editdetails = () => {
+export default function Editdetails () {
   
   const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
     const [data, setData] = useState<User | null>(null);
   const [user,setuser]=useState({work:""});
-    const navigate=useNavigate();
+    const router=useRouter();
   useEffect(()=>{
     if(!localStorage.getItem('auth-token')){
-      navigate('/')
+      router.push('/')
     }
     // console.log(token);
     getuser();
@@ -40,7 +40,7 @@ export const Editdetails = () => {
     e.preventDefault();
      const token = localStorage.getItem('auth-token');
     if (!token) {
-        navigate('/');
+        router.push('/');
         return;
     }
     const {work}=user;
@@ -55,7 +55,7 @@ export const Editdetails = () => {
    const {msg}=await post.json();
    if(msg){
     alert("Updated");
-    navigate(`/profile/${data?._id}`);
+    router.push(`/profile/${data?._id}`);
    }
    else{
     console.log(msg);

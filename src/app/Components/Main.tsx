@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navbar } from './Navbar'
 import { useNavigate } from 'react-router-dom';
 import {Heart} from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 export const Main = () => {
   const [posts,setPosts]=useState([]);
   const [like,setLike]=useState(false);
@@ -10,7 +11,7 @@ export const Main = () => {
   const [inp,setInp]=useState('');
   const [aidata,setAidata]=useState(" Ask me anything... ");
   const [isloading,setIsloading]=useState(false);
-  const navigate=useNavigate();
+  const router=useRouter();
   const {API_KEY}=process.env;
   useEffect(()=>{
     fetchallposts();
@@ -103,7 +104,7 @@ const generateai=async(e:any)=>{
 const profile=(id:any)=>{
   if(localStorage.getItem('auth-token')){
 
-    navigate(`/profile/${id}`)
+    router.push(`/Profile/${id}`)
   }
 }
 const handleai=()=>{

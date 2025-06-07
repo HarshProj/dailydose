@@ -1,14 +1,15 @@
+"use client"
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation';
 
-export const Createpost = () => {
+export default function Createpost () {
     // const [token,setToken]=useState(false);
     const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   const [user,setuser]=useState({description:""});
-    const navigate=useNavigate();
+    const router=useRouter();
   useEffect(()=>{
     if(!localStorage.getItem('auth-token')){
-      navigate('/')
+      router.push('/')
     }
     // console.log(token);
   },[])
@@ -16,7 +17,7 @@ export const Createpost = () => {
     e.preventDefault();
      const token = localStorage.getItem('auth-token');
     if (!token) {
-        navigate('/');
+        router.push('/');
         return;
     }
     const {description}=user;
@@ -31,7 +32,7 @@ export const Createpost = () => {
    const {success,msg}=await post.json();
    if(success){
     alert("Post saved");
-    navigate('/');
+    router.push('/');
    }
    else{
     // console.log(msg);

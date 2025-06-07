@@ -1,6 +1,9 @@
+"use client"
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams,Link } from 'react-router-dom';
+import { useParams} from 'next/navigation';
 import {Heart} from "@phosphor-icons/react";
+import { useRouter } from 'next/navigation';
+
 interface User {
   name: string;
   work: string;
@@ -15,7 +18,7 @@ interface Post {
   likes: string[];
   date: string;
 }
-export const Profile = () => {
+export default function Profile(){
   
   const backendurl=process.env.NEXT_PUBLIC_BACKEND_URL;
   const [posts, setPosts] = useState<Post[]>([]);
@@ -28,14 +31,14 @@ export const Profile = () => {
   const { id } = useParams<{ id: string }>();
   const [del,setdel]=useState(true);
   const [uid,setuid]=useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
   useEffect(()=>{
     if(localStorage.getItem('auth-token')){
     fetchallposts();
     // console.log(posts)
   }
     else{
-      navigate('/');
+      router.push('/');
     }
     getuser();
     
@@ -108,7 +111,7 @@ export const Profile = () => {
   const logout=()=>{
     if(localStorage.getItem('auth-token')){
       localStorage.removeItem('auth-token');
-      navigate('/')
+      router.push('/')
     }
   }
   const deletepost=async(id:string)=>{
@@ -137,7 +140,7 @@ export const Profile = () => {
   const handleimg=async()=>{
     const token = localStorage.getItem('auth-token');
     if (!token) {
-        navigate('/');
+        router.push('/');
         return;
     }
     const post=await fetch(`${backendurl}/api/auth/updateuser`,{
@@ -152,7 +155,7 @@ export const Profile = () => {
     // console.log(msg) 
     if(msg){
       alert("Updated");
-      navigate(`/profile/${data?._id}`);
+      router.push(`/profile/${data?._id}`);
      }
      else{
       console.log(msg);
@@ -224,7 +227,7 @@ export const Profile = () => {
               {data?.image?<img src={data?.image} alt="relode" className='w-[20vh] h-[20vh]  rounded-full hover:border-red-400  border-2 transition-all duration-300' />:""}
             </div>
            {user?"": <div className=" absolute bottom-2 right-5">
-                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{navigate('/updateuser')}}>edit </button></div>}
+                <button className='py-2 px-4 text-sm bg-gray-400 rounded-2xl' onClick={()=>{router.push('/Updateuser')}}>edit </button></div>}
             </div>
 
         </div>
